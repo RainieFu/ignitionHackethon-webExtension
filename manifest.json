@@ -33,9 +33,9 @@
 
   {
     "manifest_version": 3,
-    "name": "Simple Stock Tracker",
+    "name": "Exchange Rate Tracker",
     "version": "1.0",
-    "description": "Track real-time stock prices with this simple extension.",
+    "description": "Track real-time exchange rate with this simple extension.",
     "permissions": [
       "activeTab",
       "storage"

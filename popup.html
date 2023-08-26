@@ -2,17 +2,41 @@
 <html lang="en">
 
 <head>
-  <title>Simple Stock Tracker</title>
+  <title>Simple Exchange Rate Tracker</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 
 <body>
-  <h1 class="title">Stock Trend Display</h1>
+    <h1 class="title">Exchange Rate Display</h1>
+    <select id="options">
+      <option value = "USD">USD</option>
+      <option value = "CHN">CHN</option>
+      <option value = "EUR">EUR</option>
+      <option value = "JPY">JPY</option>
+      <option value = "KRW">KRW</option>
+    </select>
+    <input type="text" id="enter_amount" placeholder="Enter amount" />
+    <button id="convert">Convert</button>
+    <input type="text" id="converted" placeholder=" " />
+    <select id="options2">
+      <option value = "USD">USD</option>
+      <option value = "CHN">CHN</option>
+      <option value = "EUR">EUR</option>
+      <option value = "JPY">JPY</option>
+      <option value = "KRW">KRW</option>
+    </select>
+    <script src="popup.js"></script>
+  </body>
+
+  
+</html>
+
+
+<!-- <body>
+  <h1 class="title">Exchange Rate Display</h1>
   <input type="text" id="enter_stock" placeholder="Enter stock" />
   <button id="show_price">Show price</button>
   <div id="price"></div>
   <div id="chart"></div>
   <script src="popup.js"></script>
-</body>
-
-</html>
+</body> -->

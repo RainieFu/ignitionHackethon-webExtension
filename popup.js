@@ -1,27 +1,26 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const showPriceButton = document.getElementById("show_price");
-  const enterStockInput = document.getElementById("enter_stock");
-  const priceDisplay = document.getElementById("price");
-
-  showPriceButton.addEventListener("click", async function () {
-    const stockSymbol = enterStockInput.value;
-
-    try {
-      const apiUrl = `https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.quote where symbol = "${stockSymbol}"&format=json&env=store://datatables.org/alltableswithkeys`;
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-
-      if (data.query.count === 1) {
-        const stockInfo = data.query.results.quote;
-        const stockPrice = parseFloat(stockInfo.LastTradePriceOnly);
-
-        priceDisplay.innerText = `Price: ${stockPrice}`;
-      } else {
-        priceDisplay.innerText = "Invalid stock symbol";
-      }
-    } catch (error) {
-      console.error("Error fetching stock data:", error);
-      priceDisplay.innerText = "Error fetching data";
-    }
+  document.addEventListener("DOMContentLoaded", function () {
+    const convertButton = document.getElementById("convert");
+  
+    convertButton.addEventListener("click", function () {
+      const selectedCurrencyFrom = document.getElementById("options").value;
+      const selectedCurrencyTo = document.getElementById("options2").value;
+      const enterAmount = parseFloat(document.getElementById("enter_amount").value);
+  
+      const apiKey = "1138a964ad30d631b12eb75e";
+      const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${selectedCurrencyFrom}/${selectedCurrencyTo}/${enterAmount}`;
+  
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result === "success") {
+            const convertedAmount = data.conversion_result.toFixed(2);
+            document.getElementById("converted").value = convertedAmount;
+          } else {
+            console.error("Error converting amount");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    });
   });
-});
