@@ -73,7 +73,18 @@
         savedPairs.forEach(pair => {
           const pairElement = document.createElement("div");
           pairElement.textContent = pair;
-          savedPairsContainer.appendChild(pairElement);
+
+          const removeButton = document.createElement("button");
+          removeButton.textContent = "Remove";
+          removeButton.addEventListener("click", () => {
+             removeSavedPair(index);
+
+             displaySavedPairs();
+         });
+ 
+         pairElement.appendChild(removeButton);
+ 
+         savedPairsContainer.appendChild(pairElement);
         });
     
         // Display historical records
@@ -82,5 +93,12 @@
         //   recordElement.textContent = `${record.source} 1 -> ${record.amount} ${record.target}`;
         //   savedPairsContainer.appendChild(recordElement);
         // });
+
       }
+
+    function removeSavedPair(index) {
+        savedPairs.splice(index, 1);
+        localStorage.setItem("savedPairs", JSON.stringify(savedPairs));
+        displaySavedPairs();
+    }
   });
