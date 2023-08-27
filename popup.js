@@ -3,7 +3,7 @@
     const saveButton = document.getElementById("save")
     const savedPairsContainer = document.getElementById("saved_pairs");
     const savedPairs = JSON.parse(localStorage.getItem("savedPairs")) || [];
-    const historicalRecords = [];
+    // const historicalRecords = [];
 
     let selectedCurrencyFrom = "";
     let selectedCurrencyTo = "";
@@ -46,19 +46,21 @@
     });
 
     saveButton.addEventListener("click", function () {
+        // Save historical record
+        const record = {
+            source: selectedCurrencyFrom,
+            amount: (convertedAmount/enterAmount).toFixed(2), 
+            target: selectedCurrencyTo
+        };
+        // historicalRecords.push(record);
+
         // Save the current pairs to savedPairs
-        const pair = `${selectedCurrencyFrom}-${selectedCurrencyTo}`;
+        const pair = `${record.source} 1 -> ${record.amount}${record.target}`;
         if (!savedPairs.includes(pair) && savedPairs.length < 10) {
           savedPairs.push(pair);
           localStorage.setItem("savedPairs", JSON.stringify(savedPairs));
 
-        // Save historical record
-        const record = {
-            source: selectedCurrencyFrom,
-            amount: convertedAmount/enterAmount, 
-            target: selectedCurrencyTo
-        };
-        historicalRecords.push(record);
+        
 
         displaySavedPairs();
         }
@@ -75,10 +77,10 @@
         });
     
         // Display historical records
-        historicalRecords.slice(0, 10).forEach(record => {
-          const recordElement = document.createElement("div");
-          recordElement.textContent = `${record.source} 1 -> ${record.amount} ${record.target}`;
-          savedPairsContainer.appendChild(recordElement);
-        });
+        // historicalRecords.slice(0, 10).forEach(record => {
+        //   const recordElement = document.createElement("div");
+        //   recordElement.textContent = `${record.source} 1 -> ${record.amount} ${record.target}`;
+        //   savedPairsContainer.appendChild(recordElement);
+        // });
       }
   });
