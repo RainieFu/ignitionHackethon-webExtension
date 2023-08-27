@@ -18,7 +18,7 @@
       enterAmount = parseFloat(document.getElementById("enter_amount").value);
        
       // Validate the user input
-        if (!isValidFloat(enterAmount)) {
+        if (!isValidFloat(enterAmount) || enterAmount==0) {
             alert("Please enter a valid numeric amount.");
             return; // Exit early if input is not valid
         }
@@ -46,6 +46,10 @@
     });
 
     saveButton.addEventListener("click", function () {
+        if (savedPairs.length >= 3) {
+            alert("You can't save more than 3 pairs. Remove the saved ones first :)");
+            return;
+        }
         // Save historical record
         const record = {
             source: selectedCurrencyFrom,
@@ -56,7 +60,7 @@
 
         // Save the current pairs to savedPairs
         const pair = `${record.source} 1 -> ${record.amount}${record.target}`;
-        if (!savedPairs.includes(pair) && savedPairs.length < 10) {
+        if (!savedPairs.includes(pair) && savedPairs.length < 4) {
           savedPairs.push(pair);
           localStorage.setItem("savedPairs", JSON.stringify(savedPairs));
 
