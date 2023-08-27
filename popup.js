@@ -70,22 +70,33 @@
     function displaySavedPairs() {
         savedPairsContainer.innerHTML = "";
     
-        savedPairs.forEach(pair => {
-          const pairElement = document.createElement("div");
-          pairElement.textContent = pair;
+        // savedPairs.forEach(pair => {
+        //   const pairElement = document.createElement("div");
+        //   pairElement.textContent = pair;
 
-          const removeButton = document.createElement("button");
-          removeButton.textContent = "Remove";
-          removeButton.addEventListener("click", () => {
-             removeSavedPair(index);
+        //   const removeButton = document.createElement("button");
+        //   removeButton.textContent = "Remove";
+        //   removeButton.addEventListener("click", () => {
+        //      removeSavedPair(index);
 
-             displaySavedPairs();
-         });
- 
-         pairElement.appendChild(removeButton);
- 
-         savedPairsContainer.appendChild(pairElement);
-        });
+        //      displaySavedPairs();
+        //  });
+
+         savedPairs.forEach((pair, index) => {
+            const pairElement = document.createElement("div");
+            pairElement.textContent = pair;
+    
+            // Add a remove button for each record
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.addEventListener("click", () => {
+                removeSavedPair(index); // Pass the correct index value
+            });
+    
+            pairElement.appendChild(removeButton);
+    
+            savedPairsContainer.appendChild(pairElement);
+        });   
     
         // Display historical records
         // historicalRecords.slice(0, 10).forEach(record => {
