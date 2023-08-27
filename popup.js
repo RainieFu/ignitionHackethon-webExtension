@@ -4,6 +4,8 @@
     const savedPairsContainer = document.getElementById("saved_pairs");
     const savedPairs = JSON.parse(localStorage.getItem("savedPairs")) || [];
     // const historicalRecords = [];
+    const showTrendButton = document.getElementById("showTrendButton");
+    const chartCanvas = document.getElementById("exchangeRateChart");
 
     let selectedCurrencyFrom = "";
     let selectedCurrencyTo = "";
@@ -116,4 +118,57 @@
         localStorage.setItem("savedPairs", JSON.stringify(savedPairs));
         displaySavedPairs();
     }
+
+    showTrendButton.addEventListener("click", async function () {
+        const apiKey2 = "ef97474c6087e284795cd4f0";
+        const currentDate = new Date();
+        const chartLabels = [];
+        const chartData = [];
+
+        for (let daysAgo = 6; daysAgo >= 0; daysAgo--) {
+            const date = new Date(currentDate);
+            date.setDate(date.getDate() - daysAgo);
+
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1; // Month is zero-based
+            const day = date.getDate();
+
+            const apiUrl2 = `https://v6.exchangerate-api.com/v6/${apiKey2}/history/${selectedCurrencyFrom}/${year}/${month}/${day}`;
+            
+            try {
+                const response = await fetch(apiUrl2);
+                const data = await response.json();
+
+                if (data.result === "success") {
+                    chartLabels.push(`${month}/${day}`);
+                    chartData.push(data.conversion_rates[selectedCurrencyFrom]);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        // Create a line chart using Chart.js
+        const exchangeRateChart = new Chart(chartCanvas, {
+            type: "line",
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: `${selectedCurrencyFrom} Exchange Rate Trend`,
+                    data: chartData,
+                    fill: false,
+                    borderColor: "rgb(75, 192, 192)",
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    });
+
   });
