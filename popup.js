@@ -5,15 +5,18 @@
     const savedPairs = JSON.parse(localStorage.getItem("savedPairs")) || [];
     const historicalRecords = [];
 
+    let selectedCurrencyFrom = "";
+    let selectedCurrencyTo = "";
+    let enterAmount = 0;
     displaySavedPairs();
 
+    let convertedAmount = 0;
 
     convertButton.addEventListener("click", function () {
-      const selectedCurrencyFrom = document.getElementById("options").value;
-      const selectedCurrencyTo = document.getElementById("options2").value;
-      const enterAmount = parseFloat(document.getElementById("enter_amount").value);
+      selectedCurrencyFrom = document.getElementById("options").value;
+      selectedCurrencyTo = document.getElementById("options2").value;
+      enterAmount = parseFloat(document.getElementById("enter_amount").value);
        
-      let convertedAmount = 0;
       // Validate the user input
         if (!isValidFloat(enterAmount)) {
             alert("Please enter a valid numeric amount.");
@@ -32,15 +35,6 @@
           } else {
             console.error("Error converting amount");
           }
-
-          // Save historical record
-        const record = {
-            source: selectedCurrencyFrom,
-            amount: convertedAmount/enterAmount, 
-            target: selectedCurrencyTo
-        };
-        historicalRecords.push(record);
-        displaySavedPairs();
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -49,19 +43,26 @@
         function isValidFloat(input) {
             return /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/.test(input);
             }
-
-        
-
     });
 
     saveButton.addEventListener("click", function () {
         // Save the current pairs to savedPairs
         const pair = `${selectedCurrencyFrom}-${selectedCurrencyTo}`;
-        if (!savedPairs.includes(pair) && savedPairs.length < 3) {
+        if (!savedPairs.includes(pair) && savedPairs.length < 10) {
           savedPairs.push(pair);
           localStorage.setItem("savedPairs", JSON.stringify(savedPairs));
-          displaySavedPairs();
+
+        // Save historical record
+        const record = {
+            source: selectedCurrencyFrom,
+            amount: convertedAmount/enterAmount, 
+            target: selectedCurrencyTo
+        };
+        historicalRecords.push(record);
+
+        displaySavedPairs();
         }
+
     });
 
     function displaySavedPairs() {
@@ -74,7 +75,7 @@
         });
     
         // Display historical records
-        historicalRecords.slice(0, 3).forEach(record => {
+        historicalRecords.slice(0, 10).forEach(record => {
           const recordElement = document.createElement("div");
           recordElement.textContent = `${record.source} 1 -> ${record.amount} ${record.target}`;
           savedPairsContainer.appendChild(recordElement);
